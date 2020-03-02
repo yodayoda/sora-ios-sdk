@@ -139,7 +139,7 @@ public struct Configuration {
     
     var _webSocketChannelType: WebSocketChannel.Type {
         get {
-            return webSocketChannelType ?? BasicWebSocketChannel.self
+            return webSocketChannelType ?? SocketRocketWebSocketChannel.self
         }
     }
     
