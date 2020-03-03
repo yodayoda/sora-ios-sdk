@@ -246,6 +246,8 @@ public final class MediaChannel {
                               timeout: Int,
                               handler: @escaping (Error?) -> Void) {
         Logger.debug(type: .mediaChannel, message: "try connecting")
+        Logger.debug(type: .mediaChannel, message:  "WebSocket channel type => \(configuration._webSocketChannelType)")
+
         state = .connecting
         connectionStartTime = nil
         connectionTask.peerChannel = peerChannel

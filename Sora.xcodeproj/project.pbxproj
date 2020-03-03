@@ -19,6 +19,7 @@
 		915344121FE96F750083762B /* SoraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915344111FE96F750083762B /* SoraError.swift */; };
 		91554F431F179CFD00403C39 /* WebSocketChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91554F421F179CFD00403C39 /* WebSocketChannel.swift */; };
 		91575D93240CE251002FF5A5 /* SocketRocketWebSocketChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91575D92240CE251002FF5A5 /* SocketRocketWebSocketChannel.swift */; };
+		91575D9C240CF4FD002FF5A5 /* URLSessionWebSocketChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91575D9B240CF4FD002FF5A5 /* URLSessionWebSocketChannel.swift */; };
 		915CEC901F821A90006E45E2 /* CameraVideoCapturer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915CEC8F1F821A90006E45E2 /* CameraVideoCapturer.swift */; };
 		916134DD1F7B5EFF00ABDDAF /* AspectRatio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9174A88E1F7395CA00D586C4 /* AspectRatio.swift */; };
 		91629BF21F8E5099001193D0 /* Array+Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91629BF11F8E5098001193D0 /* Array+Base.swift */; };
@@ -85,6 +86,7 @@
 		915344111FE96F750083762B /* SoraError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoraError.swift; sourceTree = "<group>"; };
 		91554F421F179CFD00403C39 /* WebSocketChannel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketChannel.swift; sourceTree = "<group>"; };
 		91575D92240CE251002FF5A5 /* SocketRocketWebSocketChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketRocketWebSocketChannel.swift; sourceTree = "<group>"; };
+		91575D9B240CF4FD002FF5A5 /* URLSessionWebSocketChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionWebSocketChannel.swift; sourceTree = "<group>"; };
 		915CEC8F1F821A90006E45E2 /* CameraVideoCapturer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraVideoCapturer.swift; sourceTree = "<group>"; };
 		91629BF11F8E5098001193D0 /* Array+Base.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Base.swift"; sourceTree = "<group>"; };
 		91672C781F78F7FC002300E7 /* WebRTCConfigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCConfigration.swift; sourceTree = "<group>"; };
@@ -140,6 +142,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		91575D91240CE230002FF5A5 /* WebSocketChannel */ = {
+			isa = PBXGroup;
+			children = (
+				91575D92240CE251002FF5A5 /* SocketRocketWebSocketChannel.swift */,
+				91575D9B240CF4FD002FF5A5 /* URLSessionWebSocketChannel.swift */,
+				91554F421F179CFD00403C39 /* WebSocketChannel.swift */,
+			);
+			path = WebSocketChannel;
+			sourceTree = "<group>";
+		};
 		9182018E1D58667600178E2B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -384,6 +396,7 @@
 				91A19B8A1F19366000A76852 /* SignalingChannel.swift in Sources */,
 				918A38F81F30F49500D047BA /* ICEServerInfo.swift in Sources */,
 				916BBF721F19EF5800846166 /* ICECandidate.swift in Sources */,
+				91575D9C240CF4FD002FF5A5 /* URLSessionWebSocketChannel.swift in Sources */,
 				91756E211F90A87500B70C53 /* ConnectionState.swift in Sources */,
 				9138B4D01E655728006A76FB /* WebRTCInfo.swift in Sources */,
 				9174A8971F73F93B00D586C4 /* ICETransportPolicy.swift in Sources */,
