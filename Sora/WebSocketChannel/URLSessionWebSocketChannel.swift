@@ -121,41 +121,6 @@ class URLSessionWebSocketChannelContext: NSObject, URLSessionDelegate, URLSessio
         }
     }
     
-    func urlSession(_ session: URLSession,
-                    webSocketTask: URLSessionWebSocketTask,
-                    didOpenWithProtocol protocol: String?) {
-        Logger.debug(type: .webSocketChannel, message: "connected")
-        state = .connected
-        if onConnect != nil {
-            Logger.debug(type: .webSocketChannel, message: "call connect(handler:) handler")
-            onConnect!(nil)
-            onConnect = nil
-        }
-    }
-    
-    func urlSession(_ session: URLSession,
-                    webSocketTask: URLSessionWebSocketTask,
-                    didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
-                    reason: Data?) {
-        Logger.debug(type: .webSocketChannel,
-                     message: "closed with code => \(closeCode)")
-        
-        var reasonString: String?
-        if let reason = reason {
-            reasonString = String(data: reason, encoding: .utf8)
-            if let string = reasonString {
-                Logger.debug(type: .webSocketChannel,
-                             message: "reason => \(string)")
-            }
-        }
-        if closeCode != .normalClosure {
-            let statusCode = WebSocketStatusCode(rawValue: closeCode.rawValue)
-            let error = SoraError.webSocketClosed(statusCode: statusCode,
-                                                  reason: reasonString)
-            disconnect(error: error)
-        }
-    }
-    
     func receive() {
         webSocketTask?.receive { result in
             switch result {
@@ -192,4 +157,39 @@ class URLSessionWebSocketChannelContext: NSObject, URLSessionDelegate, URLSessio
         }
     }
 
+    func urlSession(_ session: URLSession,
+                    webSocketTask: URLSessionWebSocketTask,
+                    didOpenWithProtocol protocol: String?) {
+        Logger.debug(type: .webSocketChannel, message: "connected")
+        state = .connected
+        if onConnect != nil {
+            Logger.debug(type: .webSocketChannel, message: "call connect(handler:) handler")
+            onConnect!(nil)
+            onConnect = nil
+        }
+    }
+    
+    func urlSession(_ session: URLSession,
+                    webSocketTask: URLSessionWebSocketTask,
+                    didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
+                    reason: Data?) {
+        Logger.debug(type: .webSocketChannel,
+                     message: "closed with code => \(closeCode.rawValue)")
+        
+        var reasonString: String?
+        if let reason = reason {
+            reasonString = String(data: reason, encoding: .utf8)
+            if let string = reasonString {
+                Logger.debug(type: .webSocketChannel,
+                             message: "reason => \(string)")
+            }
+        }
+        if closeCode != .normalClosure {
+            let statusCode = WebSocketStatusCode(rawValue: closeCode.rawValue)
+            let error = SoraError.webSocketClosed(statusCode: statusCode,
+                                                  reason: reasonString)
+            disconnect(error: error)
+        }
+    }
+    
 }
