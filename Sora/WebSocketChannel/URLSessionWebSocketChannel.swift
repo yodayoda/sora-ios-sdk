@@ -70,6 +70,7 @@ class URLSessionWebSocketChannelContext: NSObject, URLSessionDelegate, URLSessio
                                 delegateQueue: nil)
         webSocketTask = urlSession?.webSocketTask(with: channel.url)
         webSocketTask?.resume()
+        receive()
     }
     
     func disconnect(error: Error?) {
