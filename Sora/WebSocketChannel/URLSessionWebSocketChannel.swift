@@ -187,6 +187,7 @@ class URLSessionWebSocketChannelContext: NSObject, URLSessionDelegate, URLSessio
             case .failure(let error):
                 Logger.debug(type: .webSocketChannel,
                              message: "failed to receive error => \(error.localizedDescription)")
+                self.disconnect(error: error)
             }
         }
     }
