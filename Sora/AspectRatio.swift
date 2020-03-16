@@ -1,4 +1,5 @@
 import Foundation
+import CoreGraphics
 
 /// :nodoc:
 public enum AspectRatio {

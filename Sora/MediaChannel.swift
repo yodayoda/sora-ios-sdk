@@ -199,7 +199,8 @@ public final class MediaChannel {
             configuration.signalingChannelHandlers
         peerChannel = configuration._peerChannelType
             .init(configuration: configuration,
-                  signalingChannel: signalingChannel)
+                  signalingChannel: signalingChannel,
+                  factory: NativePeerChannelFactory(videoSource: configuration.videoSource))
         peerChannel.handlers =
             configuration.peerChannelHandlers
         handlers = configuration.mediaChannelHandlers

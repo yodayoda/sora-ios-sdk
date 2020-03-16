@@ -261,7 +261,7 @@ public protocol PeerChannel: class {
      - parameter configuration: クライアントの設定
      - parameter signalingChannel: 使用するシグナリングチャネル
      */
-    init(configuration: Configuration, signalingChannel: SignalingChannel)
+    init(configuration: Configuration, signalingChannel: SignalingChannel, factory: NativePeerChannelFactory)
     
     // MARK: - 接続
     
@@ -314,11 +314,11 @@ class BasicPeerChannel: PeerChannel {
     }
     
     private var context: BasicPeerChannelContext!
-    
-    required init(configuration: Configuration, signalingChannel: SignalingChannel) {
+
+    required init(configuration: Configuration, signalingChannel: SignalingChannel, factory: NativePeerChannelFactory = .default) {
         self.configuration = configuration
         self.signalingChannel = signalingChannel
-        context = BasicPeerChannelContext(channel: self)
+        context = BasicPeerChannelContext(channel: self, factory: factory)
     }
     
     func add(stream: MediaStream) {
@@ -327,7 +327,7 @@ class BasicPeerChannel: PeerChannel {
         internalHandlers.onAddStream?(stream)
         handlers.onAddStream?(stream)
     }
-    
+
     func remove(streamId: String) {
         let stream = streams.first { stream in stream.streamId == streamId }
         if let stream = stream {
@@ -447,9 +447,11 @@ class BasicPeerChannelContext: NSObject, RTCPeerConnectionDelegate {
     var isAudioInputInitialized: Bool = false
     
     private var lock: Lock
+    private var factory: NativePeerChannelFactory
         
-    init(channel: BasicPeerChannel) {
+    init(channel: BasicPeerChannel, factory: NativePeerChannelFactory = .default) {
         self.channel = channel
+        self.factory = factory
         lock = Lock()
         super.init()
         lock.context = self
@@ -461,7 +463,7 @@ class BasicPeerChannelContext: NSObject, RTCPeerConnectionDelegate {
         signalingChannel.internalHandlers.onReceive = handle
     }
     
-    func connect(handler: @escaping (Error?) -> Void) {
+    func connect(videoSource: RTCVideoSource? = nil, handler: @escaping (Error?) -> Void) {
         if channel.state.isConnecting {
             handler(SoraError.connectionBusy(reason:
                 "PeerChannel is already connected"))
@@ -476,7 +478,7 @@ class BasicPeerChannelContext: NSObject, RTCPeerConnectionDelegate {
         onConnectHandler = handler
         
         self.webRTCConfiguration = channel.configuration.webRTCConfiguration
-        nativeChannel = NativePeerChannelFactory.default
+        nativeChannel = factory
             .createNativePeerChannel(configuration: webRTCConfiguration,
                                      constraints: webRTCConfiguration.constraints,
                                      delegate: self)
@@ -500,7 +502,7 @@ class BasicPeerChannelContext: NSObject, RTCPeerConnectionDelegate {
     func sendConnectMessage(error: Error?) {
         if configuration.isSender {
             Logger.debug(type: .peerChannel, message: "try creating offer SDP")
-            NativePeerChannelFactory.default
+            factory
                 .createClientOfferSDP(configuration: webRTCConfiguration,
                                       constraints: webRTCConfiguration.constraints)
                 { sdp, sdpError in
@@ -585,7 +587,7 @@ class BasicPeerChannelContext: NSObject, RTCPeerConnectionDelegate {
         Logger.debug(type: .peerChannel,
                      message: "initialize sender stream")
         
-        let nativeStream = NativePeerChannelFactory.default
+        let nativeStream = factory
             .createNativeSenderStream(streamId: configuration.publisherStreamId,
                                          videoTrackId:
                 configuration.videoEnabled ? configuration.publisherVideoTrackId: nil,

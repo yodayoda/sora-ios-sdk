@@ -171,7 +171,9 @@ public struct Configuration {
     /// パブリッシャーの音声トラックの ID です。
     /// 通常、指定する必要はありません。
     public var publisherAudioTrackId: String = defaultPublisherAudioTrackId
-    
+
+    public var videoSource: RTCVideoSource?
+
     // MARK: - インスタンスの生成
     
     /**

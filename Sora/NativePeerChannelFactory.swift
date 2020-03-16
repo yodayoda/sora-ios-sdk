@@ -1,15 +1,16 @@
 import Foundation
 import WebRTC
 
-class NativePeerChannelFactory {
+public class NativePeerChannelFactory {
     
     static var `default`: NativePeerChannelFactory = NativePeerChannelFactory()
     
     var nativeFactory: RTCPeerConnectionFactory
+    var videoSource: RTCVideoSource?
     
-    init() {
+    init(videoSource: RTCVideoSource? = nil) {
         Logger.debug(type: .peerChannel, message: "create native peer channel factory")
-        
+        self.videoSource = videoSource
         // 映像コーデックのエンコーダーとデコーダーを用意する
         // Sora iOS SDK では VP8, VP9, H.264 が有効
         let encoder = RTCDefaultVideoEncoderFactory()
@@ -71,7 +72,7 @@ class NativePeerChannelFactory {
         if let trackId = videoTrackId {
             Logger.debug(type: .nativePeerChannel,
                          message: "create native video track (\(trackId))")
-            let videoSource = createNativeVideoSource()
+            let videoSource = self.videoSource ?? createNativeVideoSource()
             let videoTrack = createNativeVideoTrack(videoSource: videoSource,
                                                     trackId: trackId)
             nativeStream.addVideoTrack(videoTrack)
