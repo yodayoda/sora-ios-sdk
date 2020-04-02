@@ -463,7 +463,7 @@ class BasicPeerChannelContext: NSObject, RTCPeerConnectionDelegate {
         signalingChannel.internalHandlers.onReceive = handle
     }
     
-    func connect(videoSource: RTCVideoSource? = nil, handler: @escaping (Error?) -> Void) {
+    func connect(handler: @escaping (Error?) -> Void) {
         if channel.state.isConnecting {
             handler(SoraError.connectionBusy(reason:
                 "PeerChannel is already connected"))

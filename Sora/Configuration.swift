@@ -173,6 +173,7 @@ public struct Configuration {
     public var publisherAudioTrackId: String = defaultPublisherAudioTrackId
 
     public var videoSource: RTCVideoSource?
+    public var audioSource: RTCAudioSource?
 
     // MARK: - インスタンスの生成
     

@@ -7,10 +7,12 @@ public class NativePeerChannelFactory {
     
     var nativeFactory: RTCPeerConnectionFactory
     var videoSource: RTCVideoSource?
+    var audioSource: RTCAudioSource?
     
-    init(videoSource: RTCVideoSource? = nil) {
+    init(videoSource: RTCVideoSource? = nil, audioSource: RTCAudioSource? = nil) {
         Logger.debug(type: .peerChannel, message: "create native peer channel factory")
         self.videoSource = videoSource
+        self.audioSource = audioSource
         // 映像コーデックのエンコーダーとデコーダーを用意する
         // Sora iOS SDK では VP8, VP9, H.264 が有効
         let encoder = RTCDefaultVideoEncoderFactory()
@@ -57,7 +59,7 @@ public class NativePeerChannelFactory {
     
     func createNativeAudioTrack(trackId: String,
                                 constraints: RTCMediaConstraints) -> RTCAudioTrack {
-        let audioSource = nativeFactory.audioSource(with: constraints)
+        let audioSource = self.audioSource ?? nativeFactory.audioSource(with: constraints)
         return nativeFactory.audioTrack(with: audioSource, trackId: trackId)
     }
     
@@ -81,8 +83,7 @@ public class NativePeerChannelFactory {
         if let trackId = audioTrackId {
             Logger.debug(type: .nativePeerChannel,
                          message: "create native audio track (\(trackId))")
-            let audioTrack = createNativeAudioTrack(trackId: trackId,
-                                                    constraints: constraints.nativeValue)
+            let audioTrack: RTCAudioTrack = createNativeAudioTrack(trackId: trackId, constraints: constraints.nativeValue)
             nativeStream.addAudioTrack(audioTrack)
         }
         
